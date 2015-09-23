@@ -1,0 +1,35 @@
+<!doctype html>
+<html ng-app="surveyBot">
+
+<head>
+  <title>Angle Survey</title>
+  <script src="lib/angular.js"></script>
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="services/SurveyFactory.js"></script>
+  <script src="controllers/QuestionsController.js"></script>
+  <script src="controllers/AnswersController.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div ng-controller="QuestionsCtrl">
+      <div ng-repeat="item in questions">
+        <h2>{{item.question}}</h2>
+        <div ng-controller="AnswersCtrl">
+          <form ng-submit="SurveyFactory.addResponses()">
+            <span ng-repeat="element in possibleAnswers = (answers | filter:{question : $index})">
+              <input type="radio" name={{$index}} ng-model="SurveyFactory.newResponse" value={{element.answer}}>{{element.answer}} <br>
+            </span>
+            <button class="btn">Submit</button>
+          </form>
+          <span ng-repeat="element in possibleAnswers = (answers | filter:{question : $index})">
+            <h4>{{element.answer}}: {{countResponses(element)}}</h4>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
